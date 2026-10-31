@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('title', 'MBG Report')</title>
+    <title>@yield('title', 'Lapor-mbg')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -14,7 +14,7 @@
     <nav class="navbar navbar-dark bg-success">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/">
-                MBG Report
+                Lapor-mbg
             </a>
         </div>
     </nav>

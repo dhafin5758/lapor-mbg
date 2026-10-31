@@ -43,4 +43,12 @@ public function followUps(): HasMany
             'password' => 'hashed',
         ];
     }
+
+    protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'role',
+];
+
 }
