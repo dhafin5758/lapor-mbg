@@ -9,11 +9,25 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    public function reports(): HasMany
+{
+    return $this->hasMany(Report::class);
+}
+
+public function reviews(): HasMany
+{
+    return $this->hasMany(ReportReview::class, 'reviewer_id');
+}
+
+public function followUps(): HasMany
+{
+    return $this->hasMany(FollowUp::class, 'coordinator_id');
+}
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
