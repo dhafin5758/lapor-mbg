@@ -14,7 +14,11 @@
             <h5>Menu Pemantau</h5>
             <p>Di sini pemantau dapat memeriksa laporan dan memberikan catatan peninjauan.</p>
         </div>
-
+        <div class="mt-3">
+    <a href="{{ route('reviews.index') }}" class="btn btn-primary">
+        Kelola Review Laporan
+    </a>
+</div>
         <form action="{{ route('logout') }}" method="POST" class="mt-3">
             @csrf
             <button class="btn btn-danger">Logout</button>

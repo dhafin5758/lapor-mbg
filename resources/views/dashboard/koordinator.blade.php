@@ -16,6 +16,9 @@
    class="btn btn-primary">
     Kelola Tindak Lanjut
 </a>
+    <a href="{{ route('followups.recap') }}" class="btn btn-success">
+    Lihat Rekap Laporan
+</a>
             <p>Di sini koordinator dapat melihat rekap laporan dan mencatat tindak lanjut.</p>
         </div>
 

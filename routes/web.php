@@ -7,7 +7,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\FollowUpController;
-
+use App\Http\Controllers\SchoolController;
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 // Authentication
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
@@ -77,6 +80,35 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/tindak-lanjut/{id}', [FollowUpController::class, 'store'])
             ->name('followups.store');
+
+        Route::middleware('role:koordinator')->group(function () {
+    Route::get('/tindak-lanjut', [FollowUpController::class, 'index'])
+        ->name('followups.index');
+
+    Route::post('/tindak-lanjut/{id}', [FollowUpController::class, 'store'])
+        ->name('followups.store');
+});
+    Route::get('/rekap-laporan', [FollowUpController::class, 'recap'])
+    ->name('followups.recap');
+
+
+    Route::get('/sekolah', [SchoolController::class, 'index'])
+    ->name('schools.index');
+
+Route::get('/sekolah/tambah', [SchoolController::class, 'create'])
+    ->name('schools.create');
+
+Route::post('/sekolah', [SchoolController::class, 'store'])
+    ->name('schools.store');
+
+Route::get('/sekolah/{id}/edit', [SchoolController::class, 'edit'])
+    ->name('schools.edit');
+
+Route::put('/sekolah/{id}', [SchoolController::class, 'update'])
+    ->name('schools.update');
+
+Route::delete('/sekolah/{id}', [SchoolController::class, 'destroy'])
+    ->name('schools.destroy');
     });
 
 });

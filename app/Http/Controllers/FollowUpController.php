@@ -44,4 +44,54 @@ class FollowUpController extends Controller
             ->route('followups.index')
             ->with('success', 'Tindak lanjut berhasil dicatat.');
     }
+
+
+    public function recap(Request $request)
+{
+    // Query dasar seluruh laporan
+    $query = Report::with(['user', 'school', 'distribution']);
+
+    // Filter berdasarkan tanggal mulai
+    if ($request->filled('tanggal_mulai')) {
+        $query->whereDate('created_at', '>=', $request->tanggal_mulai);
+    }
+
+    // Filter berdasarkan tanggal akhir
+    if ($request->filled('tanggal_akhir')) {
+        $query->whereDate('created_at', '<=', $request->tanggal_akhir);
+    }
+
+    // Filter berdasarkan status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Statistik mengikuti filter yang sedang digunakan
+    $totalLaporan = (clone $query)->count();
+
+    $laporanDalamProses = (clone $query)
+        ->whereIn('status', [
+            'diajukan',
+            'dalam_peninjauan',
+            'perlu_dilengkapi',
+            'siap_ditindaklanjuti',
+        ])
+        ->count();
+
+    $laporanSelesai = (clone $query)
+        ->where('status', 'selesai')
+        ->count();
+
+    // Data tabel dengan pagination
+    $reports = $query->latest()
+        ->paginate(10)
+        ->withQueryString();
+
+    return view('followups.recap', compact(
+        'reports',
+        'totalLaporan',
+        'laporanDalamProses',
+        'laporanSelesai'
+    ));
+}
 }
