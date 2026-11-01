@@ -19,7 +19,14 @@
     <a href="{{ route('followups.recap') }}" class="btn btn-success">
     Lihat Rekap Laporan
 </a>
-            <p>Di sini koordinator dapat melihat rekap laporan dan mencatat tindak lanjut.</p>
+    <a href="{{ route('schools.index') }}" class="btn btn-warning">
+    Kelola Sekolah
+</a>
+
+<a href="{{ route('distributions.index') }}" class="btn btn-info">
+    Kelola Distribusi
+</a>
+          
         </div>
 
         <form action="{{ route('logout') }}" method="POST" class="mt-3">

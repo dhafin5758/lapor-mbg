@@ -10,23 +10,19 @@ use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
-    // Menampilkan daftar laporan untuk diperiksa
  public function index(Request $request)
 {
     $query = Report::with(['user', 'school'])
         ->whereIn('status', ['diajukan', 'perlu_dilengkapi']);
 
-    // Pencarian berdasarkan judul laporan
     if ($request->filled('search')) {
         $query->where('judul', 'like', '%' . $request->search . '%');
     }
 
-    // Filter berdasarkan status
     if ($request->filled('status')) {
         $query->where('status', $request->status);
     }
 
-    // Filter berdasarkan kategori
     if ($request->filled('kategori')) {
         $query->where('kategori', $request->kategori);
     }
@@ -34,8 +30,25 @@ class ReviewController extends Controller
     $reports = $query->latest()
         ->paginate(10)
         ->withQueryString();
+    foreach ($reports as $report) {
+    $report->related_school_reports = Report::with('school')
+        ->where('school_id', $report->school_id)
+        ->where('id', '!=', $report->id)
+        ->latest()
+        ->limit(5)
+        ->get();
 
-    // Mengambil kategori yang tersedia untuk laporan yang dapat direview
+    if ($report->distribution_id) {
+        $report->related_distribution_reports = Report::with('school')
+            ->where('distribution_id', $report->distribution_id)
+            ->where('id', '!=', $report->id)
+            ->latest()
+            ->limit(5)
+            ->get();
+    } else {
+        $report->related_distribution_reports = collect();
+    }
+}
     $categories = Report::whereIn('status', ['diajukan', 'perlu_dilengkapi'])
         ->select('kategori')
         ->distinct()

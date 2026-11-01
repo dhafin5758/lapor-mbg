@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -8,36 +7,27 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\DistributionController;
+
+// Halaman utama
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
 // Authentication
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
+// Semua route berikut membutuhkan autentikasi
 Route::middleware('auth')->group(function () {
 
-    
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
-    // Testing role
-    Route::get('/pelapor', function () {
-        return 'Halaman khusus Pelapor';
-    })->middleware('role:pelapor');
-
-    Route::get('/pemantau', function () {
-        return 'Halaman khusus Pemantau';
-    })->middleware('role:pemantau');
-
-    Route::get('/koordinator', function () {
-        return 'Halaman khusus Koordinator';
-    })->middleware('role:koordinator');
-
-
+    // Hak akses Pelapor
     Route::middleware('role:pelapor')->group(function () {
 
         Route::get('/laporan', [ReportController::class, 'index'])
@@ -62,7 +52,7 @@ Route::middleware('auth')->group(function () {
             ->name('reports.distributions');
     });
 
-
+    // Hak akses Pemantau
     Route::middleware('role:pemantau')->group(function () {
 
         Route::get('/review', [ReviewController::class, 'index'])
@@ -72,43 +62,56 @@ Route::middleware('auth')->group(function () {
             ->name('reviews.store');
     });
 
-
+    // Hak akses Koordinator
     Route::middleware('role:koordinator')->group(function () {
 
+        // Tindak lanjut
         Route::get('/tindak-lanjut', [FollowUpController::class, 'index'])
             ->name('followups.index');
 
         Route::post('/tindak-lanjut/{id}', [FollowUpController::class, 'store'])
             ->name('followups.store');
 
-        Route::middleware('role:koordinator')->group(function () {
-    Route::get('/tindak-lanjut', [FollowUpController::class, 'index'])
-        ->name('followups.index');
+        // Rekap laporan
+        Route::get('/rekap-laporan', [FollowUpController::class, 'recap'])
+            ->name('followups.recap');
 
-    Route::post('/tindak-lanjut/{id}', [FollowUpController::class, 'store'])
-        ->name('followups.store');
-});
-    Route::get('/rekap-laporan', [FollowUpController::class, 'recap'])
-    ->name('followups.recap');
+        // Pengelolaan sekolah
+        Route::get('/sekolah', [SchoolController::class, 'index'])
+            ->name('schools.index');
 
+        Route::get('/sekolah/tambah', [SchoolController::class, 'create'])
+            ->name('schools.create');
 
-    Route::get('/sekolah', [SchoolController::class, 'index'])
-    ->name('schools.index');
+        Route::post('/sekolah', [SchoolController::class, 'store'])
+            ->name('schools.store');
 
-Route::get('/sekolah/tambah', [SchoolController::class, 'create'])
-    ->name('schools.create');
+        Route::get('/sekolah/{id}/edit', [SchoolController::class, 'edit'])
+            ->name('schools.edit');
 
-Route::post('/sekolah', [SchoolController::class, 'store'])
-    ->name('schools.store');
+        Route::put('/sekolah/{id}', [SchoolController::class, 'update'])
+            ->name('schools.update');
 
-Route::get('/sekolah/{id}/edit', [SchoolController::class, 'edit'])
-    ->name('schools.edit');
+        Route::delete('/sekolah/{id}', [SchoolController::class, 'destroy'])
+            ->name('schools.destroy');
 
-Route::put('/sekolah/{id}', [SchoolController::class, 'update'])
-    ->name('schools.update');
+        // Pengelolaan distribusi
+        Route::get('/distribusi', [DistributionController::class, 'index'])
+            ->name('distributions.index');
 
-Route::delete('/sekolah/{id}', [SchoolController::class, 'destroy'])
-    ->name('schools.destroy');
+        Route::get('/distribusi/tambah', [DistributionController::class, 'create'])
+            ->name('distributions.create');
+
+        Route::post('/distribusi', [DistributionController::class, 'store'])
+            ->name('distributions.store');
+
+        Route::get('/distribusi/{id}/edit', [DistributionController::class, 'edit'])
+            ->name('distributions.edit');
+
+        Route::put('/distribusi/{id}', [DistributionController::class, 'update'])
+            ->name('distributions.update');
+
+        Route::delete('/distribusi/{id}', [DistributionController::class, 'destroy'])
+            ->name('distributions.destroy');
     });
-
 });

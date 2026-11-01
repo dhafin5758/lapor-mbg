@@ -32,7 +32,7 @@ public function index(Request $request)
     }
 
     $reports = $query->latest()
-        ->paginate(10)
+        ->paginate(5)
         ->withQueryString();
 
     $categories = Report::where('user_id', Auth::id())
