@@ -13,7 +13,11 @@
         <div class="card p-4">
             <h5>Menu Pelapor</h5>
             <p>Di sini pelapor dapat membuat laporan dan melihat status laporan miliknya.</p>
-            <a href="{{ route('reports.index') }}" class="btn btn-primary">
+           <a href="{{ route('reports.create') }}" class="btn btn-primary">
+    Buat Laporan Baru
+</a>
+
+<a href="{{ route('reports.index') }}" class="btn btn-outline-primary">
     Lihat Laporan Saya
 </a>
         </div>

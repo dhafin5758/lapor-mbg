@@ -15,13 +15,18 @@
     <a href="{{ route('dashboard') }}" class="btn btn-secondary mb-3">
         Kembali ke Dashboard
     </a>
-
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
     <div class="card">
         <div class="card-body">
 
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Aksi</th>
                         <th>No</th>
                         <th>Judul</th>
                         <th>Sekolah</th>
@@ -31,24 +36,31 @@
                     </tr>
                 </thead>
 
-                <tbody>
-                    @forelse ($reports as $report)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $report->judul }}</td>
-                            <td>{{ $report->school->nama_sekolah }}</td>
-                            <td>{{ $report->kategori }}</td>
-                            <td>{{ $report->status }}</td>
-                            <td>{{ $report->created_at->format('d-m-Y') }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">
-                                Belum ada laporan.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
+              <tbody>
+    @forelse ($reports as $report)
+        <tr>
+            <td>
+                <a href="{{ route('reports.show', $report->id) }}"
+                   class="btn btn-sm btn-primary">
+                    Detail
+                </a>
+            </td>
+
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $report->judul }}</td>
+            <td>{{ $report->school->nama_sekolah }}</td>
+            <td>{{ $report->kategori }}</td>
+            <td>{{ $report->status }}</td>
+            <td>{{ $report->created_at->format('d-m-Y') }}</td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="7" class="text-center">
+                Belum ada laporan.
+            </td>
+        </tr>
+    @endforelse
+</tbody>
             </table>
 
             {{ $reports->links() }}
