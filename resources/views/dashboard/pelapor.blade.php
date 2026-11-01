@@ -13,6 +13,9 @@
         <div class="card p-4">
             <h5>Menu Pelapor</h5>
             <p>Di sini pelapor dapat membuat laporan dan melihat status laporan miliknya.</p>
+            <a href="{{ route('reports.index') }}" class="btn btn-primary">
+    Lihat Laporan Saya
+</a>
         </div>
 
         <form action="{{ route('logout') }}" method="POST" class="mt-3">
