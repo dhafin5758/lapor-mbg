@@ -12,6 +12,10 @@
 
         <div class="card p-4">
             <h5>Menu Koordinator</h5>
+            <a href="{{ route('followups.index') }}"
+   class="btn btn-primary">
+    Kelola Tindak Lanjut
+</a>
             <p>Di sini koordinator dapat melihat rekap laporan dan mencatat tindak lanjut.</p>
         </div>
 

@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ReportStatusHistory extends Model
+{
+    protected $fillable = [
+        'report_id',
+        'changed_by',
+        'status_lama',
+        'status_baru',
+        'changed_at',
+    ];
+
+    protected $casts = [
+        'changed_at' => 'datetime',
+    ];
+
+    public function report()
+    {
+        return $this->belongsTo(Report::class);
+    }
+
+    public function changedBy()
+    {
+        return $this->belongsTo(User::class, 'changed_by');
+    }
+}

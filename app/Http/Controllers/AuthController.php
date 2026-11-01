@@ -24,10 +24,28 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-
             $request->session()->regenerate();
 
-            return redirect()->intended(route('dashboard'));
+            $role = Auth::user()->role;
+
+            if ($role === 'pelapor') {
+                return redirect()->route('dashboard');
+            }
+
+            if ($role === 'pemantau') {
+                return redirect()->route('reviews.index');
+            }
+
+            if ($role === 'koordinator') {
+                return redirect()->route('followups.index');
+            }
+
+            Auth::logout();
+
+            return redirect()->route('login')
+                ->withErrors([
+                    'email' => 'Role akun tidak dikenali.',
+                ]);
         }
 
         return back()->withErrors([

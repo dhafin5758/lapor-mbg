@@ -10,15 +10,39 @@ use Illuminate\Validation\Rule;
 class ReportController extends Controller
 
 {
-    public function index()
-    {
-        $reports = Report::where('user_id', Auth::id())
-            ->with(['school', 'distribution'])
-            ->latest()
-            ->paginate(10);
 
-        return view('reports.index', compact('reports'));
+public function index(Request $request)
+{
+    $query = Report::where('user_id', Auth::id())
+        ->with(['school', 'distribution']);
+
+    // Pencarian berdasarkan judul
+    if ($request->filled('search')) {
+        $query->where('judul', 'like', '%' . $request->search . '%');
     }
+
+    // Filter berdasarkan status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Filter berdasarkan kategori
+    if ($request->filled('kategori')) {
+        $query->where('kategori', $request->kategori);
+    }
+
+    $reports = $query->latest()
+        ->paginate(10)
+        ->withQueryString();
+
+    $categories = Report::where('user_id', Auth::id())
+        ->select('kategori')
+        ->distinct()
+        ->orderBy('kategori')
+        ->pluck('kategori');
+
+    return view('reports.index', compact('reports', 'categories'));
+}
 
     public function create()
 {
@@ -112,18 +136,15 @@ public function edit($id)
 
 public function update(Request $request, $id)
 {
-    // Cari laporan milik pengguna yang sedang login
     $report = Report::where('user_id', Auth::id())
         ->findOrFail($id);
 
-    // Periksa apakah laporan masih boleh diedit
     if (!in_array($report->status, ['diajukan', 'perlu_dilengkapi'])) {
         return redirect()
             ->route('reports.show', $report->id)
             ->with('error', 'Laporan tidak dapat diedit karena sudah diproses.');
     }
 
-    // Validasi input
     $validated = $request->validate([
         'school_id' => ['required', 'exists:schools,id'],
 
