@@ -1,58 +1,144 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Lapor-MBG
 
-## About Laravel
+Aplikasi berbasis web untuk membantu proses pelaporan, peninjauan, pemantauan, dan rekapitulasi laporan terkait keamanan makanan dalam program Makan Bergizi Gratis (MBG).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Deskripsi Project
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aplikasi ini dikembangkan untuk memfasilitasi pelaporan permasalahan keamanan makanan MBG oleh Pelapor, proses peninjauan oleh Pemantau Komunitas, serta pengelolaan tindak lanjut dan rekapitulasi oleh Koordinator Komunitas.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aplikasi menerapkan autentikasi dan pembatasan hak akses berdasarkan peran pengguna (*Role-Based Access Control*).
 
-## Learning Laravel
+## Identitas Mahasiswa
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Nama: Muhammad Dhafin Ramadhan
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+NIM : 251511019
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Kelas : D3-2A
 
-## Agentic Development
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Teknologi yang Digunakan
+
+- PHP 8.3
+- Laravel 13
+- MySQL
+- Bootstrap 5
+- JavaScript
+- HTML
+- CSS
+
+## Persyaratan Instalasi
+
+Pastikan perangkat telah memiliki:
+
+- PHP 8.3 atau versi yang kompatibel dengan project.
+- Composer.
+- MySQL.
+- Node.js dan NPM 
+- Git.
+
+## Instalasi dan Menjalankan Project
+
+### 1. Clone Repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/dhafin5758/lapor-mbg
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Masuk ke direktori project:
 
-## Contributing
+```bash
+cd lapor-mbg
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Install Dependency
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Jika project menggunakan dependency frontend:
 
-## Security Vulnerabilities
+```bash
+npm install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Konfigurasi Environment
 
-## License
+Salin file `.env.example` menjadi `.env`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Untuk Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Sesuaikan konfigurasi database pada file `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=lapor_mbg
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Buat database `lapor_mbg` melalui MySQL.
+
+### 4. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 5. Jalankan Migration
+
+```bash
+php artisan migrate
+```
+
+### 6. Buat Storage Link
+
+```bash
+php artisan storage:link
+```
+
+### 7. Jalankan Aplikasi
+
+```bash
+php artisan serve
+```
+
+Aplikasi dapat diakses melalui:
+
+```text
+http://127.0.0.1:8000
+```
+
+
+
+## Akun Pengujian
+
+Akun berikut disediakan untuk kebutuhan pengujian:
+
+| Role | Email | Password |
+|---|---|---|
+| Pelapor  | pelapor@mbg.test | password123 |
+| Pelapor  | pelaporb@mbg.test | password123 | 
+| Pemantau | pemantau@mbg.test | password123 |
+| Koordinator | koordinator@mbg.test | password123 |
+
+
+
+## Penyimpanan File Bukti
+
+File bukti laporan disimpan menggunakan Laravel Filesystem pada disk `public`, di direktori:
+
+```text
+storage/app/public/evidence
+```
+
+File dapat diakses melalui  direktori `public/storage`.
+
